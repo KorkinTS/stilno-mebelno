@@ -9,8 +9,8 @@
   <meta property="og:image" content="https://korkints.github.io/stilno-mebelno/assets/kitchen.jpg">
   <meta property="og:url" content="https://korkints.github.io/stilno-mebelno/">
   <title>Стильно Мебельно — мебель на заказ в Екатеринбурге</title>
-  <link rel="stylesheet" href="style.css?v=point-zoom">
-  <script src="site.js?v=point-zoom" defer></script>
+  <link rel="stylesheet" href="style.css?v=photo-navigation">
+  <script src="site.js?v=photo-navigation" defer></script>
 </head>
 <body>
   <header class="top">
@@ -202,7 +202,12 @@
   <dialog id="photo-viewer" class="photo-viewer" aria-labelledby="photo-title">
     <div class="photo-toolbar">
       <h2 id="photo-title">Просмотр фото</h2>
-      <div class="photo-controls" aria-label="Масштаб">
+      <div id="photo-navigation" class="photo-controls photo-navigation" role="group" aria-label="Перелистывание фото" hidden>
+        <button type="button" id="photo-previous" aria-label="Предыдущее фото">‹</button>
+        <output id="photo-count" aria-live="polite" aria-label="Номер фото"></output>
+        <button type="button" id="photo-next" aria-label="Следующее фото">›</button>
+      </div>
+      <div class="photo-controls" role="group" aria-label="Масштаб и закрытие">
         <button type="button" id="photo-minus" aria-label="Уменьшить">−</button>
         <output id="photo-scale" aria-live="polite">100%</output>
         <button type="button" id="photo-plus" aria-label="Увеличить">+</button>

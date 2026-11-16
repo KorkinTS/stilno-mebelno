@@ -260,3 +260,10 @@ tfoot td { font-weight: 700; }
 
 .project-stills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; margin: 0 0 1rem; }
 .project-stills img { width: 100%; aspect-ratio: 4/5; object-fit: cover; background: #eae4d6; }
+
+.photo-navigation { margin-left: 0; }
+@media (max-width: 600px) {
+  .photo-toolbar h2 { flex-basis: 100%; }
+  .photo-controls { gap: 5px; }
+}
+.photo-navigation button[aria-disabled="true"] { opacity: .45; cursor: default; }

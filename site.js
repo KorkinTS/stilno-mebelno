@@ -46,7 +46,7 @@ for (const trigger of document.querySelectorAll('[data-project]')) {
         button.className = 'photo-trigger';
         button.setAttribute('aria-label', 'Увеличить фото: ' + caption);
         button.append(item);
-        button.addEventListener('click', () => openPhoto(item));
+        button.addEventListener('click', () => openPhotos(media.querySelectorAll('img'), item));
         figure.append(button, label);
       }
       return figure;
@@ -62,6 +62,12 @@ const fullPhoto = document.querySelector('#photo-full');
 const photoPlus = document.querySelector('#photo-plus');
 const photoMinus = document.querySelector('#photo-minus');
 const photoScale = document.querySelector('#photo-scale');
+const photoNavigation = document.querySelector('#photo-navigation');
+const previousPhoto = document.querySelector('#photo-previous');
+const nextPhoto = document.querySelector('#photo-next');
+const photoCount = document.querySelector('#photo-count');
+let photos = [];
+let photoIndex = 0;
 let zoom = 1;
 
 function renderPhoto() {
@@ -77,15 +83,33 @@ function renderPhoto() {
   photoMinus.disabled = zoom <= 1;
 }
 
-function openPhoto(image) {
+function showPhoto() {
+  const image = photos[photoIndex];
   zoom = 1;
   dragged = false;
   document.querySelector('#photo-title').textContent = image.alt;
   fullPhoto.alt = image.alt;
-  photoViewer.showModal();
+  photoCount.value = (photoIndex + 1) + ' / ' + photos.length;
+  previousPhoto.setAttribute('aria-disabled', String(photoIndex === 0));
+  nextPhoto.setAttribute('aria-disabled', String(photoIndex === photos.length - 1));
   fullPhoto.src = image.currentSrc || image.src;
   if (fullPhoto.complete && fullPhoto.naturalWidth) renderPhoto();
   photoScroll.scrollTo(0, 0);
+}
+
+function openPhotos(group, selected) {
+  photos = Array.from(group);
+  photoIndex = photos.indexOf(selected);
+  photoNavigation.hidden = photos.length < 2;
+  photoViewer.showModal();
+  showPhoto();
+}
+
+function browsePhoto(step) {
+  const index = photoIndex + step;
+  if (index < 0 || index >= photos.length) return;
+  photoIndex = index;
+  showPhoto();
 }
 
 function changeZoom(amount, from, to = from) {
@@ -110,6 +134,7 @@ function pointerPosition(event) {
 let mouseStart = null;
 let dragged = false;
 let pinch = null;
+let swipeStart = null;
 
 photoScroll.addEventListener('mousedown', event => {
   if (event.button !== 0) return;
@@ -147,6 +172,9 @@ function readPinch(touches) {
 
 photoScroll.addEventListener('touchstart', event => {
   dragged = false;
+  swipeStart = event.touches.length === 1 && zoom === 1 && photos.length > 1
+    ? pointerPosition(event.touches[0])
+    : null;
   if (event.touches.length !== 2) return;
   event.preventDefault();
   pinch = readPinch(event.touches);
@@ -158,13 +186,32 @@ photoScroll.addEventListener('touchmove', event => {
   changeZoom(zoom * (next.distance / pinch.distance - 1), pinch.center, next.center);
   pinch = next;
 }, { passive: false });
-photoScroll.addEventListener('touchend', () => { pinch = null; });
-photoScroll.addEventListener('touchcancel', () => { pinch = null; });
+photoScroll.addEventListener('touchend', event => {
+  pinch = null;
+  if (!swipeStart) return;
+  const { x, y } = pointerPosition(event.changedTouches[0]);
+  const dx = x - swipeStart.x;
+  const dy = y - swipeStart.y;
+  swipeStart = null;
+  if (Math.abs(dx) < 45 || Math.abs(dx) <= 1.3 * Math.abs(dy)) return;
+  event.preventDefault();
+  browsePhoto(dx < 0 ? 1 : -1);
+}, { passive: false });
+photoScroll.addEventListener('touchcancel', () => {
+  pinch = null;
+  swipeStart = null;
+});
 
 fullPhoto.addEventListener('load', renderPhoto);
 photoPlus.addEventListener('click', () => changeZoom(0.5));
 photoMinus.addEventListener('click', () => changeZoom(-0.5));
+previousPhoto.addEventListener('click', () => browsePhoto(-1));
+nextPhoto.addEventListener('click', () => browsePhoto(1));
 photoViewer.addEventListener('keydown', event => {
+  if (photos.length > 1 && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+    event.preventDefault();
+    browsePhoto(event.key === 'ArrowLeft' ? -1 : 1);
+  }
   if (event.key === '+' || event.key === '=' || event.key === '-') {
     event.preventDefault();
     changeZoom(event.key === '-' ? -0.5 : 0.5);
@@ -174,7 +221,10 @@ window.addEventListener('resize', () => {
   if (photoViewer.open && fullPhoto.naturalWidth) renderPhoto();
 });
 for (const button of document.querySelectorAll('[data-photo-preview]')) {
-  button.addEventListener('click', () => openPhoto(button.querySelector('img')));
+  button.addEventListener('click', () => {
+    const group = button.closest('.project-stills') ?? button;
+    openPhotos(group.querySelectorAll('img'), button.querySelector('img'));
+  });
 }
 
 document.querySelector('#request-form').addEventListener('submit', async event => {
