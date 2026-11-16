@@ -267,3 +267,11 @@ tfoot td { font-weight: 700; }
   .photo-controls { gap: 5px; }
 }
 .photo-navigation button[aria-disabled="true"] { opacity: .45; cursor: default; }
+
+.kitchen-comparison { margin-top: clamp(26px, 5vw, 55px); }
+.kitchen-comparison h3, .measurement-prep h3 { font-family: "Playfair Display Variable", Georgia, serif; font-size: clamp(1.45rem, 3vw, 2.15rem); font-weight: 400; margin-bottom: .9rem; }
+.comparison-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(7px, 2vw, 20px); }
+.comparison-grid img { width: 100%; aspect-ratio: 4/3; object-fit: contain; background: #eae4d6; }
+.measurement-prep { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 30px; margin-top: 24px; padding: clamp(18px, 3vw, 32px); background: #eae4d6; }
+.measurement-prep ul { margin: 0; padding-left: 1.3em; line-height: 1.5; }
+.measurement-prep li + li { margin-top: .35rem; }

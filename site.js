@@ -222,7 +222,7 @@ window.addEventListener('resize', () => {
 });
 for (const button of document.querySelectorAll('[data-photo-preview]')) {
   button.addEventListener('click', () => {
-    const group = button.closest('.project-stills') ?? button;
+    const group = button.closest('.project-stills, [data-photo-group]') ?? button;
     openPhotos(group.querySelectorAll('img'), button.querySelector('img'));
   });
 }
