@@ -53,12 +53,17 @@ document.querySelector('#request-form').addEventListener('submit', async event =
   const details = data.get('details').trim();
   output.value = ['Здравствуйте! Хочу запросить расчёт мебели.', 'Тип мебели: ' + data.get('product'), details].filter(Boolean).join('\n');
   document.querySelector('#prepared').hidden = false;
+  const telegram = document.querySelector('#telegram-draft');
+  const destination = new URL('https://t.me/Katy_luckylife');
+  destination.searchParams.set('text', output.value);
+  telegram.href = destination.href;
+  telegram.hidden = false;
   output.focus();
   output.select();
   status.textContent = 'Текст готов. Его можно скопировать из поля.';
   try {
     await navigator.clipboard.writeText(output.value);
-    status.textContent = 'Текст заявки скопирован.';
+    status.textContent = 'Текст заявки скопирован. Можно открыть черновик в Telegram.';
   } catch {
     // The selected text remains available for manual copying.
   }
