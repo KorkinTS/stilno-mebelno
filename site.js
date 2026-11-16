@@ -38,13 +38,79 @@ for (const trigger of document.querySelectorAll('[data-project]')) {
       }
       const label = document.createElement('figcaption');
       label.textContent = caption;
-      figure.append(item, label);
+      if (isVideo) {
+        figure.append(item, label);
+      } else {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'photo-trigger';
+        button.setAttribute('aria-label', 'Увеличить фото: ' + caption);
+        button.append(item);
+        button.addEventListener('click', () => openPhoto(item));
+        figure.append(button, label);
+      }
       return figure;
     }));
     gallery.showModal();
   });
 }
 gallery.addEventListener('close', () => media.replaceChildren());
+
+const photoViewer = document.querySelector('#photo-viewer');
+const photoScroll = document.querySelector('#photo-scroll');
+const fullPhoto = document.querySelector('#photo-full');
+const photoPlus = document.querySelector('#photo-plus');
+const photoMinus = document.querySelector('#photo-minus');
+const photoScale = document.querySelector('#photo-scale');
+let zoom = 1;
+
+function renderPhoto() {
+  const fit = Math.min(photoScroll.clientWidth / fullPhoto.naturalWidth,
+    photoScroll.clientHeight / fullPhoto.naturalHeight, 1);
+  fullPhoto.width = Math.round(fullPhoto.naturalWidth * fit * zoom);
+  fullPhoto.height = Math.round(fullPhoto.naturalHeight * fit * zoom);
+  photoScale.value = Math.round(zoom * 100) + '%';
+  photoPlus.disabled = zoom >= 4;
+  photoMinus.disabled = zoom <= 1;
+}
+
+function openPhoto(image) {
+  zoom = 1;
+  document.querySelector('#photo-title').textContent = image.alt;
+  fullPhoto.alt = image.alt;
+  photoViewer.showModal();
+  fullPhoto.src = image.currentSrc || image.src;
+  if (fullPhoto.complete && fullPhoto.naturalWidth) renderPhoto();
+  photoScroll.scrollTo(0, 0);
+}
+
+function changeZoom(amount) {
+  if (!fullPhoto.naturalWidth) return;
+  const previousZoom = zoom;
+  const stage = fullPhoto.parentElement;
+  const x = (photoScroll.scrollLeft + photoScroll.clientWidth / 2 - (stage.offsetWidth - fullPhoto.width) / 2) / previousZoom;
+  const y = (photoScroll.scrollTop + photoScroll.clientHeight / 2 - (stage.offsetHeight - fullPhoto.height) / 2) / previousZoom;
+  zoom = Math.max(1, Math.min(4, zoom + amount));
+  renderPhoto();
+  photoScroll.scrollTo(x * zoom + (stage.offsetWidth - fullPhoto.width) / 2 - photoScroll.clientWidth / 2,
+    y * zoom + (stage.offsetHeight - fullPhoto.height) / 2 - photoScroll.clientHeight / 2);
+}
+
+fullPhoto.addEventListener('load', renderPhoto);
+photoPlus.addEventListener('click', () => changeZoom(0.5));
+photoMinus.addEventListener('click', () => changeZoom(-0.5));
+photoViewer.addEventListener('keydown', event => {
+  if (event.key === '+' || event.key === '=' || event.key === '-') {
+    event.preventDefault();
+    changeZoom(event.key === '-' ? -0.5 : 0.5);
+  }
+});
+window.addEventListener('resize', () => {
+  if (photoViewer.open && fullPhoto.naturalWidth) renderPhoto();
+});
+for (const button of document.querySelectorAll('[data-photo-preview]')) {
+  button.addEventListener('click', () => openPhoto(button.querySelector('img')));
+}
 
 document.querySelector('#request-form').addEventListener('submit', async event => {
   event.preventDefault();
