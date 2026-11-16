@@ -1,7 +1,8 @@
 const projects = {
   kitchens: ['Кухни', [
     ['kitchen.jpg', 'Светлая угловая кухня'], ['kitchen-storage.jpg', 'Секция с высокими шкафами'],
-    ['kitchen-detail.jpg', 'Фасады и ручки крупным планом'], ['kitchen-after.jpg', 'Кухня после монтажа']
+    ['kitchen-detail.jpg', 'Фасады и ручки крупным планом'], ['kitchen-before.jpg', 'До установки кухни'],
+    ['kitchen-after.jpg', 'Кухня после монтажа']
   ]],
   storage: ['Шкафы и гардеробные', [
     ['wardrobe.jpg', 'Шкаф со светлыми фасадами'], ['wardrobe-open.jpg', 'Внутреннее наполнение шкафа']
