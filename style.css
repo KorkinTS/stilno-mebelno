@@ -238,3 +238,7 @@ tfoot td { font-weight: 700; }
 .client-photo { margin-top: 24px; max-width: 700px; }
 .client-photo img { display: block; width: 100%; height: auto; filter: contrast(1.025) brightness(1.025); }
 @media (max-width: 850px) { .video-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; } }
+
+.team-with-portrait { display: grid; grid-template-columns: minmax(105px, 165px) minmax(0, 1fr); gap: clamp(12px, 2vw, 24px); align-items: start; }
+.team-with-portrait img { width: 100%; height: auto; border-radius: 3px; }
+@media (max-width: 760px) { .team-with-portrait { grid-template-columns: minmax(96px, 28%) minmax(0, 1fr); } }
