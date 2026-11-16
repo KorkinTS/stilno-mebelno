@@ -98,9 +98,10 @@ h3 { font-size: 1.55rem; margin-bottom: .6rem; }
 .button.light:hover { background: #e6deca; }
 .button.outline { border-color: var(--line); color: var(--ink); background: var(--white); }
 .button.outline:hover { background: #ece6d9; }
-.hero-photo { position: relative; min-height: 530px; overflow: hidden; background: #d7ccba; }
+.hero-photo { display: grid; grid-template-rows: 1fr auto; }
+.hero-image { position: relative; min-height: 530px; overflow: hidden; background: #d7ccba; }
 .hero-photo img { width: 100%; height: 100%; position: absolute; object-fit: cover; object-position: center 69%; }
-.hero-photo figcaption { position: absolute; inset: auto 18px 18px auto; background: var(--white); padding: .75rem 1rem; display: flex; gap: 1.2rem; font-size: .86rem; }
+.hero-photo figcaption { margin-top: .55rem; color: var(--muted); font-size: .86rem; }
 .projects, .team { padding-block: 75px 95px; border-top: 1px solid var(--line); }
 .section-head { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 1.35rem; }
 .section-head p:last-child { max-width: 350px; color: var(--muted); }
@@ -175,7 +176,7 @@ tfoot td { font-weight: 700; }
 @media (max-width: 850px) {
   .wrap { width: calc(100% - 52px); }
   .hero { min-height: auto; gap: 24px; }
-  .hero-photo { min-height: 460px; }
+  .hero-image { min-height: 460px; }
   .hero h1 { font-size: clamp(3.3rem, 9vw, 5.5rem); }
   .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -189,7 +190,7 @@ tfoot td { font-weight: 700; }
   .hero { padding-block: 22px 30px; gap: 14px; }
   .hero-copy { padding-block: 8px; }
   .hero h1 { font-size: clamp(3.8rem, 13vw, 5rem); }
-  .hero-photo { min-height: 0; aspect-ratio: 5/4; }
+  .hero-image { min-height: 0; aspect-ratio: 5/4; }
   .hero-actions { font-size: .87rem; }
   .projects, .team, .story, .contact { padding-block: 46px; }
   .section-head { display: block; }
