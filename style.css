@@ -275,3 +275,7 @@ tfoot td { font-weight: 700; }
 .measurement-prep { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 30px; margin-top: 24px; padding: clamp(18px, 3vw, 32px); background: #eae4d6; }
 .measurement-prep ul { margin: 0; padding-left: 1.3em; line-height: 1.5; }
 .measurement-prep li + li { margin-top: .35rem; }
+
+.vanity-stills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.vanity-stills .photo-trigger:first-child { grid-column: 1 / -1; }
+.vanity-stills .photo-trigger:first-child img { aspect-ratio: 3/4; object-fit: contain; }
