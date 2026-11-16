@@ -121,7 +121,7 @@ document.querySelector('#request-form').addEventListener('submit', async event =
   output.value = ['Здравствуйте! Хочу запросить расчёт мебели.', 'Тип мебели: ' + data.get('product'), details].filter(Boolean).join('\n');
   document.querySelector('#prepared').hidden = false;
   const telegram = document.querySelector('#telegram-draft');
-  const destination = new URL('https://t.me/Katy_luckylife');
+  const destination = new URL('https://t.me/Stilnomebelnoekb');
   destination.searchParams.set('text', output.value);
   telegram.href = destination.href;
   telegram.hidden = false;
