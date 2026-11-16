@@ -69,6 +69,9 @@ function renderPhoto() {
     photoScroll.clientHeight / fullPhoto.naturalHeight, 1);
   fullPhoto.width = Math.round(fullPhoto.naturalWidth * fit * zoom);
   fullPhoto.height = Math.round(fullPhoto.naturalHeight * fit * zoom);
+  fullPhoto.parentElement.style.padding = zoom > 1
+    ? (photoScroll.clientHeight / 2) + 'px ' + (photoScroll.clientWidth / 2) + 'px'
+    : '0';
   photoScale.value = Math.round(zoom * 100) + '%';
   photoPlus.disabled = zoom >= 4;
   photoMinus.disabled = zoom <= 1;
@@ -76,6 +79,7 @@ function renderPhoto() {
 
 function openPhoto(image) {
   zoom = 1;
+  dragged = false;
   document.querySelector('#photo-title').textContent = image.alt;
   fullPhoto.alt = image.alt;
   photoViewer.showModal();
@@ -84,17 +88,78 @@ function openPhoto(image) {
   photoScroll.scrollTo(0, 0);
 }
 
-function changeZoom(amount) {
+function changeZoom(amount, from, to = from) {
   if (!fullPhoto.naturalWidth) return;
-  const previousZoom = zoom;
-  const stage = fullPhoto.parentElement;
-  const x = (photoScroll.scrollLeft + photoScroll.clientWidth / 2 - (stage.offsetWidth - fullPhoto.width) / 2) / previousZoom;
-  const y = (photoScroll.scrollTop + photoScroll.clientHeight / 2 - (stage.offsetHeight - fullPhoto.height) / 2) / previousZoom;
+  const viewport = photoScroll.getBoundingClientRect();
+  const target = from ?? { x: viewport.left + viewport.width / 2, y: viewport.top + viewport.height / 2 };
+  const destination = to ?? target;
+  const before = fullPhoto.getBoundingClientRect();
+  const x = Math.max(0, Math.min(1, (target.x - before.left) / before.width));
+  const y = Math.max(0, Math.min(1, (target.y - before.top) / before.height));
   zoom = Math.max(1, Math.min(4, zoom + amount));
   renderPhoto();
-  photoScroll.scrollTo(x * zoom + (stage.offsetWidth - fullPhoto.width) / 2 - photoScroll.clientWidth / 2,
-    y * zoom + (stage.offsetHeight - fullPhoto.height) / 2 - photoScroll.clientHeight / 2);
+  const after = fullPhoto.getBoundingClientRect();
+  photoScroll.scrollBy(after.left + after.width * x - destination.x,
+    after.top + after.height * y - destination.y);
 }
+
+function pointerPosition(event) {
+  return { x: event.clientX, y: event.clientY };
+}
+
+let mouseStart = null;
+let dragged = false;
+let pinch = null;
+
+photoScroll.addEventListener('mousedown', event => {
+  if (event.button !== 0) return;
+  dragged = false;
+  mouseStart = pointerPosition(event);
+});
+window.addEventListener('mousemove', event => {
+  if (!mouseStart || zoom <= 1 || !photoViewer.open) return;
+  const position = pointerPosition(event);
+  const dx = position.x - mouseStart.x;
+  const dy = position.y - mouseStart.y;
+  if (!dragged && Math.hypot(dx, dy) < 5) return;
+  dragged = true;
+  photoScroll.scrollBy(-dx, -dy);
+  mouseStart = position;
+});
+window.addEventListener('mouseup', () => { mouseStart = null; });
+fullPhoto.addEventListener('click', event => {
+  if (!dragged) changeZoom(1, pointerPosition(event));
+  dragged = false;
+});
+photoScroll.addEventListener('wheel', event => {
+  if (!event.deltaY) return;
+  event.preventDefault();
+  changeZoom(event.deltaY < 0 ? 0.25 : -0.25, pointerPosition(event));
+}, { passive: false });
+
+function readPinch(touches) {
+  const [a, b] = touches;
+  return {
+    center: { x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 },
+    distance: Math.max(1, Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY))
+  };
+}
+
+photoScroll.addEventListener('touchstart', event => {
+  dragged = false;
+  if (event.touches.length !== 2) return;
+  event.preventDefault();
+  pinch = readPinch(event.touches);
+}, { passive: false });
+photoScroll.addEventListener('touchmove', event => {
+  if (!pinch || event.touches.length !== 2) return;
+  event.preventDefault();
+  const next = readPinch(event.touches);
+  changeZoom(zoom * (next.distance / pinch.distance - 1), pinch.center, next.center);
+  pinch = next;
+}, { passive: false });
+photoScroll.addEventListener('touchend', () => { pinch = null; });
+photoScroll.addEventListener('touchcancel', () => { pinch = null; });
 
 fullPhoto.addEventListener('load', renderPhoto);
 photoPlus.addEventListener('click', () => changeZoom(0.5));
