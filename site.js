@@ -14,7 +14,7 @@ const projects = {
     ['hallway.jpg', 'Мебель в прихожей'], ['panels.jpg', 'Декоративные панели'], ['project-and-result.jpg', 'Эскиз и готовый проект']
   ]],
   business: ['Мебель для бизнеса', [['business.jpg', 'Сравнение дизайн-проекта и готовой мебели для медицинского центра']]],
-  video: ['Видео работ', [['overview-1.mp4', 'Обзор работы 1'], ['overview-2.mp4', 'Обзор работы 2']]]
+  video: ['Видео работ', [['overview-1.mp4', 'Обзор работы 1'], ['corner-kitchen-2250.mp4', 'Видеообзор угловой кухни']]]
 };
 
 const gallery = document.querySelector('#gallery');
