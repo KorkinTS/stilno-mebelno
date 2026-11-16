@@ -276,5 +276,5 @@ tfoot td { font-weight: 700; }
 .measurement-prep ul { margin: 0; padding-left: 1.3em; line-height: 1.5; }
 .measurement-prep li + li { margin-top: .35rem; }
 
-.vanity-stills { grid-template-columns: minmax(0, 1.25fr) repeat(2, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); aspect-ratio: 120/77; }
+.vanity-stills { grid-template-columns: minmax(0, 1.25fr) repeat(2, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); aspect-ratio: 200/231; }
 .vanity-stills img { height: 100%; aspect-ratio: auto; }
