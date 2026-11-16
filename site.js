@@ -68,3 +68,18 @@ document.querySelector('#request-form').addEventListener('submit', async event =
     // The selected text remains available for manual copying.
   }
 });
+
+const requestForm = document.querySelector('#request-form');
+for (const link of document.querySelectorAll('[data-similar-project]')) {
+  link.addEventListener('click', () => {
+    const details = requestForm.elements.namedItem('details');
+    const project = link.dataset.similarProject;
+    const previous = details.value.replace(/^Хочу похожий проект «[^»]+»\.\n?/, '');
+    details.value = ['Хочу похожий проект «' + project + '».', previous].filter(Boolean).join('\n');
+    const product = requestForm.elements.namedItem('product');
+    product.value = project.includes('кухня') || project.startsWith('Кухня') ? 'Кухня' : 'Другое';
+    document.querySelector('#prepared').hidden = true;
+    document.querySelector('#telegram-draft').hidden = true;
+    document.querySelector('#request-status').textContent = '';
+  });
+}

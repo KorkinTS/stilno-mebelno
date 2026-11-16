@@ -227,3 +227,14 @@ tfoot td { font-weight: 700; }
   .case-grid, .case-grid.reviews, .process-grid { grid-template-columns: 1fr; gap: 12px; }
   .site-section { padding-block: 43px; }
 }
+
+.case-grid article video, .workshop-video video, .video-grid video { width: 100%; background: #242720; object-fit: contain; }
+.case-grid article video { height: clamp(270px, 35vw, 410px); margin: 0 0 1rem; }
+.project-size { color: var(--muted); font-variant-numeric: tabular-nums; }
+.workshop-video video { height: clamp(350px, 50vw, 530px); }
+.workshop-video figcaption, .video-grid figcaption, .client-photo figcaption { margin-top: .65rem; color: var(--muted); }
+.video-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 20px; }
+.video-grid video { height: clamp(200px, 30vw, 355px); }
+.client-photo { margin-top: 24px; max-width: 700px; }
+.client-photo img { display: block; width: 100%; height: auto; filter: contrast(1.025) brightness(1.025); }
+@media (max-width: 850px) { .video-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; } }
