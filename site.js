@@ -262,7 +262,7 @@ for (const link of document.querySelectorAll('[data-similar-project]')) {
     const previous = details.value.replace(/^Хочу похожий проект «[^»]+»\.\n?/, '');
     details.value = ['Хочу похожий проект «' + project + '».', previous].filter(Boolean).join('\n');
     const product = requestForm.elements.namedItem('product');
-    product.value = project.includes('кухня') || project.startsWith('Кухня') ? 'Кухня' : 'Другое';
+    product.value = link.dataset.product || 'Другое';
     document.querySelector('#prepared').hidden = true;
     document.querySelector('#telegram-draft').hidden = true;
     document.querySelector('#request-status').textContent = '';
