@@ -139,7 +139,7 @@ let dragged = false;
 let pinch = null;
 let swipeStart = null;
 
-photoScroll.addEventListener('mousedown', event => {
+photoScroll?.addEventListener('mousedown', event => {
   if (event.button !== 0) return;
   dragged = false;
   mouseStart = pointerPosition(event);
@@ -155,11 +155,11 @@ window.addEventListener('mousemove', event => {
   mouseStart = position;
 });
 window.addEventListener('mouseup', () => { mouseStart = null; });
-fullPhoto.addEventListener('click', event => {
+fullPhoto?.addEventListener('click', event => {
   if (!dragged) changeZoom(1, pointerPosition(event));
   dragged = false;
 });
-photoScroll.addEventListener('wheel', event => {
+photoScroll?.addEventListener('wheel', event => {
   if (!event.deltaY) return;
   event.preventDefault();
   changeZoom(event.deltaY < 0 ? 0.25 : -0.25, pointerPosition(event));
@@ -173,7 +173,7 @@ function readPinch(touches) {
   };
 }
 
-photoScroll.addEventListener('touchstart', event => {
+photoScroll?.addEventListener('touchstart', event => {
   dragged = false;
   swipeStart = event.touches.length === 1 && zoom === 1 && photos.length > 1
     ? pointerPosition(event.touches[0])
@@ -182,14 +182,14 @@ photoScroll.addEventListener('touchstart', event => {
   event.preventDefault();
   pinch = readPinch(event.touches);
 }, { passive: false });
-photoScroll.addEventListener('touchmove', event => {
+photoScroll?.addEventListener('touchmove', event => {
   if (!pinch || event.touches.length !== 2) return;
   event.preventDefault();
   const next = readPinch(event.touches);
   changeZoom(zoom * (next.distance / pinch.distance - 1), pinch.center, next.center);
   pinch = next;
 }, { passive: false });
-photoScroll.addEventListener('touchend', event => {
+photoScroll?.addEventListener('touchend', event => {
   pinch = null;
   if (!swipeStart) return;
   const { x, y } = pointerPosition(event.changedTouches[0]);
@@ -200,17 +200,17 @@ photoScroll.addEventListener('touchend', event => {
   event.preventDefault();
   browsePhoto(dx < 0 ? 1 : -1);
 }, { passive: false });
-photoScroll.addEventListener('touchcancel', () => {
+photoScroll?.addEventListener('touchcancel', () => {
   pinch = null;
   swipeStart = null;
 });
 
-fullPhoto.addEventListener('load', renderPhoto);
-photoPlus.addEventListener('click', () => changeZoom(0.5));
-photoMinus.addEventListener('click', () => changeZoom(-0.5));
-previousPhoto.addEventListener('click', () => browsePhoto(-1));
-nextPhoto.addEventListener('click', () => browsePhoto(1));
-photoViewer.addEventListener('keydown', event => {
+fullPhoto?.addEventListener('load', renderPhoto);
+photoPlus?.addEventListener('click', () => changeZoom(0.5));
+photoMinus?.addEventListener('click', () => changeZoom(-0.5));
+previousPhoto?.addEventListener('click', () => browsePhoto(-1));
+nextPhoto?.addEventListener('click', () => browsePhoto(1));
+photoViewer?.addEventListener('keydown', event => {
   if (photos.length > 1 && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
     event.preventDefault();
     browsePhoto(event.key === 'ArrowLeft' ? -1 : 1);
@@ -221,7 +221,7 @@ photoViewer.addEventListener('keydown', event => {
   }
 });
 window.addEventListener('resize', () => {
-  if (photoViewer.open && fullPhoto.naturalWidth) renderPhoto();
+  if (photoViewer?.open && fullPhoto.naturalWidth) renderPhoto();
 });
 for (const button of document.querySelectorAll('[data-photo-preview]')) {
   button.addEventListener('click', () => {
@@ -255,16 +255,15 @@ requestForm?.addEventListener('submit', async event => {
   }
 });
 
-for (const link of document.querySelectorAll('[data-similar-project]')) {
-  link.addEventListener('click', () => {
-    const details = requestForm.elements.namedItem('details');
-    const project = link.dataset.similarProject;
-    const previous = details.value.replace(/^Хочу похожий проект «[^»]+»\.\n?/, '');
-    details.value = ['Хочу похожий проект «' + project + '».', previous].filter(Boolean).join('\n');
-    const product = requestForm.elements.namedItem('product');
-    product.value = link.dataset.product || 'Другое';
-    document.querySelector('#prepared').hidden = true;
-    document.querySelector('#telegram-draft').hidden = true;
-    document.querySelector('#request-status').textContent = '';
-  });
+if (requestForm) {
+  const params = new URLSearchParams(location.search);
+  const requestedProduct = params.get('product');
+  const project = params.get('project')?.trim().slice(0, 150);
+  const product = requestForm.elements.namedItem('product');
+  if (requestedProduct && Array.from(product.options).some(option => option.value === requestedProduct)) {
+    product.value = requestedProduct;
+  }
+  if (project) {
+    requestForm.elements.namedItem('details').value = 'Хочу похожий проект «' + project + '».';
+  }
 }
