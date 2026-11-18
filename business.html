@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Мебель для бизнеса — Стильно Мебельно</title>
+  <meta name="description" content="Корпусная мебель на заказ для бизнеса в Екатеринбурге. Шкафы, столешница, полки и решётка для радиатора в кабинете медцентра «Мира».">
+  <meta property="og:title" content="Мебель для бизнеса — Стильно Мебельно">
+  <meta property="og:description" content="Как изготовили мебель для кабинета медицинского центра «Мира».">
+  <meta property="og:image" content="https://korkints.github.io/stilno-mebelno/assets/business.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=business-case">
+  <script src="site.js?v=business-case" defer></script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-inner">
+      <a class="brand" href="index.html"><img src="assets/logo.png" alt="Стильно Мебельно" width="180" height="43"></a>
+      <a class="top-contact" href="index.html#projects">Все проекты <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main class="wrap business-page">
+    <h1>Мебель для бизнеса</h1>
+    <section class="business-case" aria-labelledby="mira">
+      <div>
+        <h2 id="mira">Кабинет медцентра «Мира»</h2>
+        <p>Изготовили и установили шкафы под столешницу, подготовили столешницу и длинные настенные полки. Для радиатора разработали решётку с учётом его конструкции.</p>
+        <p>Размеры и расположение мебели согласовали с местом для кушетки и раковины. Кабинет находится на нижнем этаже. При доставке детали пронесли через несколько узких дверных проёмов на входе.</p>
+        <div class="hero-actions">
+          <a class="button" href="https://t.me/Stilnomebelnoekb?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D1%81%D1%83%D0%B4%D0%B8%D1%82%D1%8C%20%D0%B8%D0%B7%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%BC%D0%B5%D0%B1%D0%B5%D0%BB%D0%B8%20%D0%B4%D0%BB%D1%8F%20%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81%D0%B0.%20%D0%9F%D0%BE%D0%B4%D1%81%D0%BA%D0%B0%D0%B6%D0%B8%D1%82%D0%B5%2C%20%D0%BA%D0%B0%D0%BA%D0%B8%D0%B5%20%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D1%8B%20%D0%BD%D1%83%D0%B6%D0%BD%D1%8B%20%D0%B4%D0%BB%D1%8F%20%D0%BF%D1%80%D0%B5%D0%B4%D0%B2%D0%B0%D1%80%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D0%B3%D0%BE%20%D1%80%D0%B0%D1%81%D1%87%D1%91%D1%82%D0%B0%3F" target="_blank" rel="noopener noreferrer">Отправить проект на расчёт <span aria-hidden="true">↗</span></a>
+        </div>
+        <p class="business-contact-note">Эскиз или чертёж можно приложить в Telegram.</p>
+      </div>
+      <figure class="business-photo">
+        <button class="photo-trigger" type="button" data-photo-preview aria-label="Увеличить дизайн-проект и фото кабинета">
+          <img src="assets/business.jpg" alt="Кабинет медцентра «Мира». Слева дизайн-проект, справа мебель после монтажа." width="1280" height="1280">
+        </button>
+        <figcaption>Дизайн-проект и готовая мебель</figcaption>
+      </figure>
+    </section>
+  </main>
+  <footer class="wrap footer">
+    <a class="brand" href="index.html"><img src="assets/logo.png" alt="Стильно Мебельно" width="150" height="36"></a>
+    <span>Корпусная мебель на заказ · Екатеринбург</span>
+  </footer>
+  <dialog id="photo-viewer" class="photo-viewer" aria-labelledby="photo-title">
+    <div class="photo-toolbar">
+      <h2 id="photo-title">Просмотр фото</h2>
+      <div id="photo-navigation" class="photo-controls photo-navigation" role="group" aria-label="Перелистывание фото" hidden>
+        <button type="button" id="photo-previous" aria-label="Предыдущее фото">‹</button>
+        <output id="photo-count" aria-live="polite" aria-label="Номер фото"></output>
+        <button type="button" id="photo-next" aria-label="Следующее фото">›</button>
+      </div>
+      <div class="photo-controls" role="group" aria-label="Масштаб и закрытие">
+        <button type="button" id="photo-minus" aria-label="Уменьшить">−</button>
+        <output id="photo-scale" aria-live="polite">100%</output>
+        <button type="button" id="photo-plus" aria-label="Увеличить">+</button>
+        <form method="dialog"><button type="submit" autofocus aria-label="Закрыть фото">×</button></form>
+      </div>
+    </div>
+    <div id="photo-scroll" class="photo-scroll" tabindex="0" aria-label="Область просмотра фото">
+      <div class="photo-stage"><img id="photo-full" alt="" draggable="false"></div>
+    </div>
+  </dialog>
+</body>
+</html>

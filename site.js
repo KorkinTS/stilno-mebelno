@@ -13,7 +13,6 @@ const projects = {
   interior: ['Прихожие и панели', [
     ['hallway.jpg', 'Мебель в прихожей'], ['panels.jpg', 'Декоративные панели'], ['project-and-result.jpg', 'Эскиз и готовый проект']
   ]],
-  business: ['Мебель для бизнеса', [['business.jpg', 'Сравнение дизайн-проекта и готовой мебели для медицинского центра']]],
   video: ['Видео работ', [['overview-1.mp4', 'Обзор работы 1'], ['corner-kitchen-2250.mp4', 'Видеообзор угловой кухни']]]
 };
 
@@ -54,7 +53,7 @@ for (const trigger of document.querySelectorAll('[data-project]')) {
     gallery.showModal();
   });
 }
-gallery.addEventListener('close', () => media.replaceChildren());
+gallery?.addEventListener('close', () => media.replaceChildren());
 
 const photoViewer = document.querySelector('#photo-viewer');
 const photoScroll = document.querySelector('#photo-scroll');
@@ -227,7 +226,8 @@ for (const button of document.querySelectorAll('[data-photo-preview]')) {
   });
 }
 
-document.querySelector('#request-form').addEventListener('submit', async event => {
+const requestForm = document.querySelector('#request-form');
+requestForm?.addEventListener('submit', async event => {
   event.preventDefault();
   const data = new FormData(event.currentTarget);
   const output = document.querySelector('#request-text');
@@ -251,7 +251,6 @@ document.querySelector('#request-form').addEventListener('submit', async event =
   }
 });
 
-const requestForm = document.querySelector('#request-form');
 for (const link of document.querySelectorAll('[data-similar-project]')) {
   link.addEventListener('click', () => {
     const details = requestForm.elements.namedItem('details');
