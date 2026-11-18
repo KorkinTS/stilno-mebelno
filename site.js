@@ -13,7 +13,10 @@ const projects = {
   interior: ['Прихожие и панели', [
     ['hallway.jpg', 'Мебель в прихожей'], ['panels.jpg', 'Декоративные панели'], ['project-and-result.jpg', 'Эскиз и готовый проект']
   ]],
-  video: ['Видео работ', [['overview-1.mp4', 'Обзор работы 1'], ['corner-kitchen-2250.mp4', 'Видеообзор угловой кухни']]]
+  video: ['Видео работ', [
+    ['overview-1.mp4', 'ТВ-зона с подсветкой', 'tv-wall-video.jpg'],
+    ['corner-kitchen-2250.mp4', 'Видеообзор угловой кухни', 'corner-kitchen-view.jpg']
+  ]]
 };
 
 const gallery = document.querySelector('#gallery');
@@ -22,14 +25,15 @@ for (const trigger of document.querySelectorAll('[data-project]')) {
   trigger.addEventListener('click', () => {
     const [title, entries] = projects[trigger.dataset.project];
     document.querySelector('#gallery-title').textContent = title;
-    media.replaceChildren(...entries.map(([file, caption]) => {
+    media.replaceChildren(...entries.map(([file, caption, poster]) => {
       const figure = document.createElement('figure');
       const isVideo = file.endsWith('.mp4');
       const item = document.createElement(isVideo ? 'video' : 'img');
-      item.src = 'assets/' + file;
+      item.src = 'assets/' + file + (isVideo ? '?v=video-edit' : '');
       if (isVideo) {
         item.controls = true;
-        item.preload = 'metadata';
+        item.preload = 'none';
+        item.poster = 'assets/' + poster;
         item.playsInline = true;
         item.setAttribute('aria-label', caption);
       } else {
